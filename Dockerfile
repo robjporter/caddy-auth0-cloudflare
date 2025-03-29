@@ -1,26 +1,16 @@
 # -------- Builder Stage --------
-FROM golang:1.24-alpine AS caddy_builder
+FROM caddy:2.9.1-builder AS builder
 
-RUN apk add --no-cache git
-
-RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
-
-# Clone the full plugin locally
-RUN git clone --branch v1.1.31 https://github.com/greenpau/caddy-security /caddy-security
-
-RUN /go/bin/xcaddy build \
-    --output /caddy \
-    --with github.com/greenpau/caddy-security=/caddy-security \
-    --with github.com/greenpau/caddy-security/modules/handler/auth_portal=/caddy-security/modules/handler/auth_portal \
-    --with github.com/greenpau/caddy-security/modules/handler/forward_auth=/caddy-security/modules/handler/forward_auth \
-    --with github.com/greenpau/caddy-security/modules/auth/oauth2=/caddy-security/modules/auth/oauth2 \
+RUN xcaddy build \
+    --output /usr/bin/caddy \
+    --with github.com/greenpau/caddy-security@v1.1.31 \
     --with github.com/caddy-dns/cloudflare
 
 RUN /caddy list-modules | grep auth
 
 # -------- Final Stage --------
-FROM caddy:alpine
+FROM caddy:2.9.1
 
-COPY --from=caddy_builder /caddy /usr/bin/caddy
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 ENTRYPOINT ["/usr/bin/caddy"]
