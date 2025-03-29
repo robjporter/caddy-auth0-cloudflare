@@ -5,6 +5,9 @@ RUN apk add --no-cache git
 
 RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
+# Clone the full plugin locally
+RUN git clone --branch v1.1.31 https://github.com/greenpau/caddy-security /caddy-security
+
 RUN /go/bin/xcaddy build \
     --output /caddy \
     --with github.com/greenpau/caddy-security=/caddy-security \
