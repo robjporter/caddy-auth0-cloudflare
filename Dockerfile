@@ -6,7 +6,7 @@ RUN xcaddy build \
     --with github.com/greenpau/caddy-security@v1.1.31 \
     --with github.com/caddy-dns/cloudflare
 
-RUN /caddy list-modules | grep auth
+RUN /usr/bin/caddy list-modules | grep auth
 
 # -------- Final Stage --------
 FROM caddy:2.9.1
