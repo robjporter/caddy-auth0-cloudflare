@@ -7,10 +7,10 @@ RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
 
 RUN /go/bin/xcaddy build \
     --output /caddy \
-    --with github.com/greenpau/caddy-security@v1.1.31 \
-    --with github.com/greenpau/caddy-security@v1.1.31=./modules/handler/auth_portal \
-    --with github.com/greenpau/caddy-security@v1.1.31=./modules/handler/forward_auth \
-    --with github.com/greenpau/caddy-security@v1.1.31=./modules/auth/oauth2 \
+    --with github.com/greenpau/caddy-security=/caddy-security \
+    --with github.com/greenpau/caddy-security/modules/handler/auth_portal=/caddy-security/modules/handler/auth_portal \
+    --with github.com/greenpau/caddy-security/modules/handler/forward_auth=/caddy-security/modules/handler/forward_auth \
+    --with github.com/greenpau/caddy-security/modules/auth/oauth2=/caddy-security/modules/auth/oauth2 \
     --with github.com/caddy-dns/cloudflare
 
 RUN /caddy list-modules | grep auth
