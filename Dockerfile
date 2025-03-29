@@ -16,6 +16,6 @@ RUN /caddy list-modules | grep auth
 # -------- Final Stage --------
 FROM caddy:2.9.1
 
-COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+COPY --from=builder /caddy /usr/bin/caddy
 
 ENTRYPOINT ["/usr/bin/caddy"]
