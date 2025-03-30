@@ -1,5 +1,7 @@
 # -------- Builder Stage --------
-FROM caddy:2.9.1-builder AS builder
+FROM golang:1.24-alpine AS builder
+
+RUN apk add --no-cache git
 
 RUN xcaddy build \
     --output /caddy \
